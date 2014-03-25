@@ -8,6 +8,7 @@
 
 Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 
+
 return array(
     'theme'=>'bootstrap',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
@@ -20,6 +21,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+        'application.helpers.*',
 	),
 
 	'modules'=>array(
@@ -41,12 +43,22 @@ return array(
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
+            'loginUrl'=>array('auth/login')
 		),
         'bootstrap'=>array(
             'class'=>'bootstrap.components.Bootstrap',
         ),
 
-		// uncomment the following to enable URLs in path-format
+        'image'=>array(
+            'class'=>'application.extensions.image.CImageComponent',
+            // GD or ImageMagick
+            'driver'=>'GD',
+            // ImageMagick setup path
+            'params'=>array('directory'=>'/usr/local/bin/convert'),
+        ),
+
+
+        // uncomment the following to enable URLs in path-format
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',

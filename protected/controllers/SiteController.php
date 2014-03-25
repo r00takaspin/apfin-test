@@ -2,6 +2,7 @@
 
 class SiteController extends Controller
 {
+
 	/**
 	 * Declares class-based actions.
 	 */
@@ -18,6 +19,7 @@ class SiteController extends Controller
 			'page'=>array(
 				'class'=>'CViewAction',
 			),
+            'saveImageAttachment' => 'ext.imageAttachment.ImageAttachmentAction',
 		);
 	}
 
