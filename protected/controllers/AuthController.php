@@ -33,6 +33,10 @@ class AuthController extends Controller
 
 	public function actionRegister()
 	{
+        if (Yii::app()->user->id)
+        {
+            $this->redirect(array("profile/index"));
+        }
         if(Yii::app()->getRequest()->getIsAjaxRequest()) {
             $model = new User;
             $model->attributes = $_POST['User'];
@@ -45,10 +49,17 @@ class AuthController extends Controller
             $model->attributes = $_POST['User'];
             if ($model->validate())
             {
+                $password = $model->passwd;
+
                 $model->save();
-                $identity=new UserIdentity($model->login,$model->passwd);
+
+                $identity=new UserIdentity($model->login,$password);
                 if($identity->authenticate())
+                {
                     Yii::app()->user->login($identity);
+
+                    die();
+                }
                 else
                     echo $identity->errorMessage;
             }

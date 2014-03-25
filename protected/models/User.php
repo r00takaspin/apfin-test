@@ -44,11 +44,10 @@ class User extends CActiveRecord
 		return array(
 			array('country_id', 'numerical', 'integerOnly'=>true),
 			array('first_name, last_name, third_name, login, passwd', 'length', 'max'=>255),
-            array('first_name, last_name, login, passwd, country_id, passwd_repeat','required','on'=>'create'),
-            array('first_name, last_name, login, country_id','required','on'=>'update'),
-            #array('login','email'),
-            array('login','validate_login','on'=>'create','on'=>'create'),
-            array('passwd_repeat','validate_passwd','required','on'=>'create'),
+            array('first_name, last_name, login, passwd, country_id, passwd_repeat','required'),
+            array('login','email'),
+            array('login','validate_login'),
+            array('passwd_repeat,passwd','validate_passwd'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, first_name, last_name, third_name, login, passwd, country_id', 'safe', 'on'=>'search'),
@@ -126,13 +125,19 @@ class User extends CActiveRecord
 		return parent::model($className);
 	}
 
+    private function isCurrentAuthorizedUser($user_id)
+    {
+        if ($user_id==Yii::app()->user->id)
+            return true;
+        else
+            return false;
+    }
 
     #TODO: вынести в отдельный класс
     public function validate_login($attribute,$params)
     {
-
         $found = User::model()->find('login=:login',array("login"=>$this->login));
-        if ($found)
+        if ($found && !$this->isCurrentAuthorizedUser($found->id))
         {
             $this->addError($attribute,"Такой почтовый ящик уже существует в базе");
         }
@@ -157,9 +162,9 @@ class User extends CActiveRecord
                 // extension for image saving, can be also tiff, png or gif
                 'extension' => 'jpg',
                 // folder to store images
-                'directory' => Yii::getPathOfAlias('webroot').'/images/avatars/preview',
+                'directory' => Yii::getPathOfAlias('webroot').'/images/productTheme/preview',
                 // url for images folder
-                'url' => Yii::app()->request->baseUrl . '/images/avatars/preview',
+                'url' => Yii::app()->request->baseUrl . '/images/productTheme/preview',
                 // image versions
                 'versions' => array(
                     'small' => array(

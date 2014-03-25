@@ -4,4 +4,8 @@
 		convertNoticesToExceptions="true"
 		convertWarningsToExceptions="true"
 		stopOnFailure="false">
+
+    <selenium>
+        <browser name="Firefox" browser="*firefox" />
+    </selenium>
 </phpunit>

@@ -3,9 +3,13 @@
 /* @var $model User */
 /* @var $form CActiveForm */
 ?>
+
 <?
-CHtml::$errorCss='alert alert-error'
+$this->breadcrumbs=array(
+    'Edit profile',
+);
 ?>
+
 <div class="row">
     <div class="span4">
         <?

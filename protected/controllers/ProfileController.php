@@ -14,10 +14,9 @@ class ProfileController extends Controller
         elseif (Yii::app()->getRequest()->getIsPostRequest())
         {
             $model->attributes = $_POST['User'];
-            if ($model->validate())
+            if ($model->save(true,array('first_name','last_name','country_id')))
             {
                 Yii::app()->user->setFlash('profileUpdated','Профиль успешно изменен');
-                $model->save();
             }
             else
             {

@@ -44,12 +44,12 @@ CHtml::$errorCss='alert alert-error'
 		<?php echo $form->error($model,'third_name'); ?>
         </div>
 		<?php echo $form->labelEx($model,'passwd'); ?>
-		<?php echo $form->textField($model,'passwd'); ?>
+		<?php echo $form->passwordField($model,'passwd'); ?>
 		<?php echo $form->error($model,'passwd'); ?>
 
 
         <?php echo $form->labelEx($model,'passwd_repeat'); ?>
-        <?php echo $form->textField($model,'passwd_repeat'); ?>
+        <?php echo $form->passwordField($model,'passwd_repeat'); ?>
         <?php echo $form->error($model,'passwd_repeat'); ?>
 
         <BR /> <BR />
