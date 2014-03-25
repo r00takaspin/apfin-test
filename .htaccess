@@ -6,4 +6,4 @@ RedirectMatch 403 /\..*$
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 # иначе отправлять запрос на файл index.php
-RewriteRule . index.php
+#RewriteRule . index.php

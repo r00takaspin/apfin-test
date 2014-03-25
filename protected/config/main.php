@@ -62,7 +62,6 @@ return array(
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',
-            'showScriptName'=>false,
 			'rules'=>array(
                 '' => 'auth/index',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',

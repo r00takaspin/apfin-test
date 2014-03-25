@@ -35,7 +35,7 @@ class AuthController extends Controller
 	{
         if (Yii::app()->user->id)
         {
-            $this->redirect(array("profile/index"));
+            $this->redirect(Yii::app()->createUrl("profile/index"));
         }
         if(Yii::app()->getRequest()->getIsAjaxRequest()) {
             $model = new User;
@@ -56,9 +56,8 @@ class AuthController extends Controller
                 $identity=new UserIdentity($model->login,$password);
                 if($identity->authenticate())
                 {
-                    Yii::app()->user->login($identity);
-
-                    die();
+                    Yii::app()->user->login($identity,3600*24*7);
+                    $this->redirect(array("profile/index"));
                 }
                 else
                     echo $identity->errorMessage;

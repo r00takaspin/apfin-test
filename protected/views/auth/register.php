@@ -3,6 +3,7 @@
 /* @var $model User */
 /* @var $form CActiveForm */
 ?>
+<h1>Форма регистрации</h1>
 <?
 CHtml::$errorCss='alert alert-error'
 ?>
@@ -10,7 +11,7 @@ CHtml::$errorCss='alert alert-error'
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'user-register-form',
-    'htmlOptions'=>array('class'=>'form-horizontal'),
+    'htmlOptions'=>array('class'=>'form-horizontal','name'=>'RegisterForm',),
     'enableAjaxValidation'=>true,
     'clientOptions'=>array(
         'validateOnSubmit'=>true,
@@ -54,7 +55,7 @@ CHtml::$errorCss='alert alert-error'
 
         <BR /> <BR />
 
-		<?php echo CHtml::submitButton('Submit'); ?>
+		<?php echo CHtml::submitButton('Зарегистрироваться!',array('name'=>'submit','id'=>'submit_registration')); ?>
 
 <?php $this->endWidget(); ?>
 

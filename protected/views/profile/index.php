@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 <div class="row">
     <div class="span2">
         <?
-        if($user->preview->hasImage())
+        if($user->preview && $user->preview->hasImage())
             echo CHtml::image($user->preview->getUrl('preview'),'',array('class'=>'img-rounded'));
         else
             echo 'no image uploaded';
