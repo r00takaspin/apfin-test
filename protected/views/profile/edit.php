@@ -39,6 +39,11 @@ $this->breadcrumbs=array(
             )); ?>
 
             <p class="note">Поля со звездочкой <span class="required">*</span> являются обязательными.</p>
+
+            <?php echo $form->labelEx($model,'login'); ?>
+            <?php echo $form->textField($model,'login',array('disabled'=>'disabled')); ?>
+            <?php echo $form->error($model,'login'); ?>
+
             <?php echo $form->labelEx($model,'country_id'); ?>
             <?php echo $form->dropDownList(
                 $model,
@@ -47,10 +52,6 @@ $this->breadcrumbs=array(
                 array('onchange'=>'showThirdName(this)')
             ); ?>
             <?php echo $form->error($model,'country_id'); ?>
-
-            <?php echo $form->labelEx($model,'login'); ?>
-            <?php echo $form->textField($model,'login',array('onkeypress'=>'this.form.submit')); ?>
-            <?php echo $form->error($model,'login'); ?>
 
             <?php echo $form->labelEx($model,'first_name'); ?>
             <?php echo $form->textField($model,'first_name'); ?>

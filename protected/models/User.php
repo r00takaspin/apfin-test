@@ -39,17 +39,15 @@ class User extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
+        #TODO: задать минимальную длину пароля
 		return array(
 			array('country_id', 'numerical', 'integerOnly'=>true),
 			array('first_name, last_name, third_name, login, passwd', 'length', 'max'=>255),
-            array('first_name, last_name, login, passwd, country_id, passwd_repeat','required'),
+            array('first_name, last_name, login, passwd, country_id','required'),
+            array('passwd_repeat','required','on'=>'create'),
             array('login','email'),
-            array('login','validate_login'),
-            array('passwd_repeat,passwd','validate_passwd'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
+            array('login','validate_login','on'=>'create'),
+            array('passwd_repeat,passwd','validate_passwd','on'=>'create'),
 			array('id, first_name, last_name, third_name, login, passwd, country_id', 'safe', 'on'=>'search'),
 		);
 	}

@@ -39,6 +39,7 @@ class AuthController extends Controller
         }
         if(Yii::app()->getRequest()->getIsAjaxRequest()) {
             $model = new User;
+            $model->setScenario("create");
             $model->attributes = $_POST['User'];
             echo CActiveForm::validate($model);
             Yii::app()->end();
@@ -46,6 +47,7 @@ class AuthController extends Controller
         elseif (Yii::app()->getRequest()->getIsPostRequest())
         {
             $model = new User;
+            $model->setScenario("create");
             $model->attributes = $_POST['User'];
             if ($model->validate())
             {

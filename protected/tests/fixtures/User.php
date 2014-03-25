@@ -8,21 +8,30 @@
 
 return array(
     'sample1'=>array(
-        'login'=>'test@test.com',
+        'id'=>1,
+        'login'=>'test111@test.com',
         'first_name'=>'Вася',
         'last_name'=>'Пупкин',
         'third_name'=>'Пантелеевич',
-        'passwd'=>'123456',
-        'passwd_repeat'=>'123456',
+        'passwd'=>md5('123456'),
         'country_id'=>1,
     ),
     'new_user'=>array(
-        'login'=>'test@test.com',
+        'id'=>2,
+        'login'=>'test222@test.com',
         'first_name'=>'Вася',
         'last_name'=>'Пупкин',
         'third_name'=>'Пантелеевич',
-        'passwd'=>'123456',
-        'passwd_repeat'=>'123456',
+        'passwd'=>md5('123456'),
+        'country_id'=>1,
+    ),
+    'update_profile'=>array(
+        'id'=>3,
+        'login'=>'test333@test.com',
+        'first_name'=>'Семен',
+        'last_name'=>'Сосницкий',
+        'third_name'=>'Котиков',
+        'passwd'=>md5('123456'),
         'country_id'=>1,
     ),
 );

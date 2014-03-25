@@ -33,8 +33,9 @@ class UserTest extends CDbTestCase {
     public function testNotUniqueLogin()
     {
         $new_user = new User;
+        $new_user->scenario = "create";
         $new_user->setAttributes(array(
-            'login'=>'test@test.com',
+            'login'=>'test111@test.com',
         ));
         $this->assertFalse($new_user->validate(array('login')));
     }
@@ -51,6 +52,7 @@ class UserTest extends CDbTestCase {
     public function testPasswordNotMatch()
     {
         $new_user = new User;
+        $new_user->scenario = "create";
         $new_user->setAttributes(array(
             'passwd'=>'блаблабла',
             'passwd_repeat'=>'траляля'
@@ -76,5 +78,20 @@ class UserTest extends CDbTestCase {
         ));
 
         $this->assertFalse($new_user->validate(array('country_id')));
+    }
+
+    public function  testUpdateProfile()
+    {
+        $user = User::model()->findByPk($this->users["update_profile"]['id']);
+        $user->setAttributes(array('first_name'=>'батя','last_name'=>'паук'));
+        $user->scenario = 'update';
+        $user->save(true);
+        $updated_user = User::model()->findByPk($this->users["update_profile"]['id']);
+        $this->assertEquals('батя',$updated_user->first_name);
+        $this->assertEquals('паук',$updated_user->last_name);
+
+        $identity=new UserIdentity($user->login,'123456');
+        $this->assertTrue($identity->authenticate());
+
     }
 }
