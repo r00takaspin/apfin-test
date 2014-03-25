@@ -4,7 +4,29 @@ class ProfileController extends Controller
 {
 	public function actionEdit()
 	{
-		$this->render('edit');
+        $model = User::model()->findByPk(Yii::app()->user->id);
+        $model->setScenario('update');
+        if(Yii::app()->getRequest()->getIsAjaxRequest()) {
+            $model->attributes = $_POST['User'];
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+        elseif (Yii::app()->getRequest()->getIsPostRequest())
+        {
+            $model->attributes = $_POST['User'];
+            if ($model->validate())
+            {
+                Yii::app()->user->setFlash('profileUpdated','Профиль успешно изменен');
+                $model->save();
+            }
+            else
+            {
+                var_dump($model->getErrors());
+                die();
+            }
+        }
+
+		$this->render('edit',array('model'=>$model));
 	}
 
 	public function actionFriends()

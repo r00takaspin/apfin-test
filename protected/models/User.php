@@ -44,10 +44,11 @@ class User extends CActiveRecord
 		return array(
 			array('country_id', 'numerical', 'integerOnly'=>true),
 			array('first_name, last_name, third_name, login, passwd', 'length', 'max'=>255),
-            array('first_name, last_name, login, passwd, country_id, passwd_repeat','required'),
+            array('first_name, last_name, login, passwd, country_id, passwd_repeat','required','on'=>'create'),
+            array('first_name, last_name, login, country_id','required','on'=>'update'),
             #array('login','email'),
-            array('login','validate_login'),
-            array('passwd_repeat','validate_passwd'),
+            array('login','validate_login','on'=>'create','on'=>'create'),
+            array('passwd_repeat','validate_passwd','required','on'=>'create'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, first_name, last_name, third_name, login, passwd, country_id', 'safe', 'on'=>'search'),
@@ -62,7 +63,7 @@ class User extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'country'=>array(self::HAS_ONE,'Country','country_id')
+            'country'=>array(self::BELONGS_TO,'Country','country_id')
 		);
 	}
 

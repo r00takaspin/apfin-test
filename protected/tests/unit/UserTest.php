@@ -1,4 +1,6 @@
 <?php
+require_once 'PHPUnit/Autoload.php';
+
 /**
  * Created by PhpStorm.
  * User: voldemar
