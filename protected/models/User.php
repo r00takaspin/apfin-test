@@ -26,17 +26,11 @@ class User extends CActiveRecord
         return true;
     }
 
-	/**
-	 * @return string the associated database table name
-	 */
 	public function tableName()
 	{
 		return 'user';
 	}
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
 	public function rules()
 	{
         #TODO: задать минимальную длину пароля
@@ -52,15 +46,11 @@ class User extends CActiveRecord
 		);
 	}
 
-	/**
-	 * @return array relational rules.
-	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
-            'country'=>array(self::BELONGS_TO,'Country','country_id')
+            'country'=>array(self::BELONGS_TO,'Country','country_id'),
+            'friends'=>array(self::MANY_MANY,'User','friendship(from_id, to_id)')
 		);
 	}
 
@@ -81,18 +71,7 @@ class User extends CActiveRecord
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
+
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
@@ -174,5 +153,84 @@ class User extends CActiveRecord
                 )
             )
         );
+    }
+
+    /*
+     * @param int $from кто добавляет
+     * @param int $to кого добавляют
+     * @return boolean
+     */
+    public static function addFriend($from,$to)
+    {
+        $from = (int)$from;
+        $to = (int)$to;
+        if (self::user_exists($from) && self::user_exists($to))
+        {
+            if (self::relation_exists($from,$to))
+            {
+                return false;
+            }
+            else
+            {
+                $f = new Friendship();
+                $f->from_id = $from;
+                $f->to_id = $to;
+                if ($f->save(true))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    /*
+     * @param int $from кто удаляет
+     * @param int $to кого удаляют
+     * @return boolean
+     */
+    public static  function removeFriend($from,$to)
+    {
+        $from = (int)$from;
+        $to = (int)$to;
+        if (self::user_exists($from) && self::user_exists($to))
+        {
+            if (self::relation_exists($from,$to))
+            {
+                $model = new Friendship();
+                $rel = $model->model()->find('from_id=:from_id AND to_id=:to_id',array('from_id'=>$from,'to_id'=>$to));
+                if ($rel->delete())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+    private function user_exists($user_id)
+    {
+        return User::model()->findByPk($user_id);
+    }
+
+    private function relation_exists($from,$to)
+    {
+        if (Friendship::model()->find('from_id=:from_id AND to_id=:to_id',array('from_id'=>$from,'to_id'=>$to)))
+        {
+            return true;
+        }
+        else
+            return false;
     }
 }

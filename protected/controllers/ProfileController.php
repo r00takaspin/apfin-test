@@ -36,8 +36,22 @@ class ProfileController extends Controller
 	public function actionIndex()
 	{
         $user = User::model()->findByPk(Yii::app()->user->id);
-		$this->render('INDEX',array('user'=>$user));
+		$this->render('index',array('user'=>$user));
 	}
+
+    public function actionUserList()
+    {
+        $current_user  = User::model()->findByPk(Yii::app()->user->id);
+        $user_list = User::model()->findAll(array("order"=>"ID ASC"));
+
+        $this->render("user_list",array("user_list"=>$user_list,'current_user'=>$current_user));
+    }
+
+    public function actionAddFriend()
+    {
+        $user = User::model()->findByPk(Yii::app()->user->id);
+        $user->addFriend((int)$_POST['to']);
+    }
 
     public function filters()
     {
@@ -51,40 +65,13 @@ class ProfileController extends Controller
         #TODO: вынести в константу защищенные экшены
         return array(
             array('allow',
-                'actions'=>array('index', 'edit','friends'),
+                'actions'=>array('index', 'edit','friends','addFriend','userList'),
                 'users'=>array('@'),
             ),
             array('deny',
-                'actions'=>array('index', 'edit','friends'),
+                'actions'=>array('index', 'edit','friends','addFriend','userList'),
                 'users'=>array('?'),
             ),
         );
     }
-
-	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
 }

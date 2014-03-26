@@ -9,9 +9,11 @@ require_once 'PHPUnit/Autoload.php';
  */
 
 class UserTest extends CDbTestCase {
+
     public $fixtures=array(
         'users'=>'User',
         'countries'=>'Country',
+        'friendship'=>'Friendship'
     );
 
     public  function testCreateUser()
@@ -92,6 +94,36 @@ class UserTest extends CDbTestCase {
 
         $identity=new UserIdentity($user->login,'123456');
         $this->assertTrue($identity->authenticate());
+    }
+
+
+
+    public function testAddFriend()
+    {
+        $this->assertTrue(User::addFriend($this->users['sample_friend1']['id'],$this->users['sample_friend2']['id']));
+    }
+
+    public function testRemoveFriend()
+    {
+        $this->assertTrue(User::removeFriend($this->users['friend_one']['id'],$this->users['friend_two']['id']));
+    }
+
+    public function testFriendList()
+    {
+        $user = User::model()->findByPk($this->users['friend_one']['id']);
+        $this->assertEquals(count($user->friends),1);
+
+        $user = User::model()->findByPk($this->users['friends_owner']['id']);
+        $this->assertEquals(count($user->friends),2);
+
+        $user = User::model()->findByPk($this->users['new_user']['id']);
+        $this->assertEquals(count($user->friends),0);
+    }
+
+    public function areFriends($user1,$user2)
+    {
 
     }
+
+
 }
