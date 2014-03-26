@@ -164,6 +164,11 @@ class User extends CActiveRecord
     {
         $from = (int)$from;
         $to = (int)$to;
+        if ($from==$to)
+        {
+            return false;
+        }
+
         if (self::user_exists($from) && self::user_exists($to))
         {
             if (self::relation_exists($from,$to))
@@ -194,10 +199,16 @@ class User extends CActiveRecord
      * @param int $to кого удаляют
      * @return boolean
      */
-    public static  function removeFriend($from,$to)
+    public static function removeFriend($from,$to)
     {
         $from = (int)$from;
         $to = (int)$to;
+
+        if ($from==$to)
+        {
+            return false;
+        }
+
         if (self::user_exists($from) && self::user_exists($to))
         {
             if (self::relation_exists($from,$to))
@@ -213,6 +224,21 @@ class User extends CActiveRecord
                     return false;
                 }
             }
+        }
+        return false;
+    }
+
+    public static function isFriend($user1_id,$user2_id)
+    {
+        $user1_id = (int)$user1_id;
+        $user2_id = (int)$user2_id;
+        if (self::user_exists($user1_id) && self::user_exists($user1_id))
+        {
+            if (Friendship::model()->find('from_id=:user1_id AND to_id=:user2_id',array('user1_id'=>$user1_id,'user2_id'=>$user2_id)))
+            {
+                return true;
+            }
+            return false;
         }
         return false;
     }

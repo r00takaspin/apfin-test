@@ -96,16 +96,17 @@ class UserTest extends CDbTestCase {
         $this->assertTrue($identity->authenticate());
     }
 
-
-
     public function testAddFriend()
     {
         $this->assertTrue(User::addFriend($this->users['sample_friend1']['id'],$this->users['sample_friend2']['id']));
+        $this->assertFalse(User::addFriend($this->users['sample_friend1']['id'],$this->users['sample_friend1']['id']));
     }
 
     public function testRemoveFriend()
     {
         $this->assertTrue(User::removeFriend($this->users['friend_one']['id'],$this->users['friend_two']['id']));
+
+        $this->assertFalse(User::removeFriend($this->users['friend_one']['id'],$this->users['friend_one']['id']));
     }
 
     public function testFriendList()
@@ -120,9 +121,9 @@ class UserTest extends CDbTestCase {
         $this->assertEquals(count($user->friends),0);
     }
 
-    public function areFriends($user1,$user2)
+    public function testIsFriend()
     {
-
+        $this->assertTrue(User::isFriend($this->users['friends_owner']['id'],$this->users['friend_two']['id']));
     }
 
 

@@ -39,10 +39,23 @@ class ProfileController extends Controller
 		$this->render('index',array('user'=>$user));
 	}
 
+    public function actionShow($id)
+    {
+        $user = User::model()->findByPk($id);
+        if ($user)
+        {
+            $this->render('index',array('user'=>$user));
+        }
+        else
+        {
+            throw new CHttpException(404,'Профиль не найден');
+        }
+    }
+
     public function actionUserList()
     {
         $current_user  = User::model()->findByPk(Yii::app()->user->id);
-        $user_list = User::model()->findAll(array("order"=>"ID ASC"));
+        $user_list = User::model()->findAll("ID!=".$current_user->id,array("order"=>"ID ASC"));
 
         $this->render("user_list",array("user_list"=>$user_list,'current_user'=>$current_user));
     }
@@ -50,7 +63,22 @@ class ProfileController extends Controller
     public function actionAddFriend()
     {
         $user = User::model()->findByPk(Yii::app()->user->id);
-        $user->addFriend((int)$_POST['to']);
+
+        if ($user->id == $_POST['from'] && $user->addFriend($_POST['from'],$_POST['to']))
+        {
+            return 'success';
+        }
+        return false;
+    }
+
+    public function actionRemoveFriend()
+    {
+        $user = User::model()->findByPk(Yii::app()->user->id);
+        if ($user->id == $_POST['from'] && $user->removeFriend($_POST['from'],$_POST['to']))
+        {
+            return 'success';
+        }
+        return false;
     }
 
     public function filters()
