@@ -1,21 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "currency_rates".
+ * This is the model class for table "currency_trans".
  *
- * The followings are the available columns in table 'currency_rates':
+ * The followings are the available columns in table 'currency_trans':
  * @property integer $id
- * @property string $currency
- * @property double $rate
+ * @property integer $user_id
+ * @property integer $from_currency_id
+ * @property integer $to_currency_id
+ * @property double $amount
  */
-class CurrencyRate extends CActiveRecord
+class CurrencyTransaction extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'currency_rates';
+		return 'currency_trans';
 	}
 
 	/**
@@ -26,12 +28,12 @@ class CurrencyRate extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('currency, rate', 'required'),
-			array('rate', 'numerical'),
-			array('currency', 'length', 'max'=>20),
+			array('user_id, from_currency_id, to_currency_id, amount', 'required'),
+			array('user_id, from_currency_id, to_currency_id', 'numerical', 'integerOnly'=>true),
+			array('amount', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, currency, rate', 'safe', 'on'=>'search'),
+			array('id, user_id, from_currency_id, to_currency_id, amount', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,8 +55,10 @@ class CurrencyRate extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'currency' => 'Currency',
-			'rate' => 'Rate',
+			'user_id' => 'User',
+			'from_currency_id' => 'From Currency',
+			'to_currency_id' => 'To Currency',
+			'amount' => 'Amount',
 		);
 	}
 
@@ -77,8 +81,10 @@ class CurrencyRate extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('currency',$this->currency,true);
-		$criteria->compare('rate',$this->rate);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('from_currency_id',$this->from_currency_id);
+		$criteria->compare('to_currency_id',$this->to_currency_id);
+		$criteria->compare('amount',$this->amount);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -89,20 +95,10 @@ class CurrencyRate extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return CurrencyRate the static model class
+	 * @return CurrencyTransaction the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
-    public static function randCurrency()
-    {
-        $criteria = new CDbCriteria();
-        $criteria->limit = 1;
-        $criteria->order = 'RAND()';
-
-        $cr = CurrencyRate::model()->find($criteria);
-        return $cr;
-    }
 }

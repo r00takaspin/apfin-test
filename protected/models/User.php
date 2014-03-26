@@ -26,6 +26,19 @@ class User extends CActiveRecord
         return true;
     }
 
+    public function afterSave()
+    {
+        if ($this->getIsNewRecord())
+        {
+            $bill = new Bill();
+
+            $bill->currency_id = CurrencyRate::randCurrency()->id;
+            $bill->amount = 1000;
+            $bill->user_id = $this->id;
+            $bill->save();
+        }
+    }
+
 	public function tableName()
 	{
 		return 'user';
@@ -50,7 +63,8 @@ class User extends CActiveRecord
 	{
 		return array(
             'country'=>array(self::BELONGS_TO,'Country','country_id'),
-            'friends'=>array(self::MANY_MANY,'User','friendship(from_id, to_id)')
+            'friends'=>array(self::MANY_MANY,'User','friendship(from_id, to_id)'),
+            'bills'=>array(self::HAS_MANY,'Bill','user_id')
 		);
 	}
 
@@ -102,32 +116,6 @@ class User extends CActiveRecord
 		return parent::model($className);
 	}
 
-    private function isCurrentAuthorizedUser($user_id)
-    {
-        if ($user_id==Yii::app()->user->id)
-            return true;
-        else
-            return false;
-    }
-
-    #TODO: вынести в отдельный класс
-    public function validate_login($attribute,$params)
-    {
-        $found = User::model()->find('login=:login',array("login"=>$this->login));
-        if ($found && !$this->isCurrentAuthorizedUser($found->id))
-        {
-            $this->addError($attribute,"Такой почтовый ящик уже существует в базе");
-        }
-    }
-
-    public function validate_passwd($attribute,$params)
-    {
-        if ($this->passwd!=$this->passwd_repeat)
-        {
-            $this->addError($attribute,"Пароли не совпадают!");
-        }
-    }
-
     public function behaviors()
     {
         return array(
@@ -155,11 +143,33 @@ class User extends CActiveRecord
         );
     }
 
-    /*
-     * @param int $from кто добавляет
-     * @param int $to кого добавляют
-     * @return boolean
-     */
+    private function isCurrentAuthorizedUser($user_id)
+    {
+        if ($user_id==Yii::app()->user->id)
+            return true;
+        else
+            return false;
+    }
+
+    #TODO: вынести в отдельный класс
+    public function validate_login($attribute,$params)
+    {
+        $found = User::model()->find('login=:login',array("login"=>$this->login));
+        if ($found && !$this->isCurrentAuthorizedUser($found->id))
+        {
+            $this->addError($attribute,"Такой почтовый ящик уже существует в базе");
+        }
+    }
+
+    public function validate_passwd($attribute,$params)
+    {
+        if ($this->passwd!=$this->passwd_repeat)
+        {
+            $this->addError($attribute,"Пароли не совпадают!");
+        }
+    }
+
+
     public static function addFriend($from,$to)
     {
         $from = (int)$from;
@@ -193,12 +203,6 @@ class User extends CActiveRecord
         }
     }
 
-
-    /*
-     * @param int $from кто удаляет
-     * @param int $to кого удаляют
-     * @return boolean
-     */
     public static function removeFriend($from,$to)
     {
         $from = (int)$from;

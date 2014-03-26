@@ -14,7 +14,6 @@ class EcbParserCommand extends CConsoleCommand {
         #по идее надо записывать сначала в темповую таблицу и лишь
         #потом удалять записи, но этот момент я опущу в
         #тестовом задании
-        User::model()->findAll();
         CurrencyRate::model()->deleteAll();
         for($i=0;$i<count($xml[0]->Cube->Cube->Cube);$i++)
         {

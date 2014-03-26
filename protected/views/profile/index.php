@@ -24,9 +24,22 @@ $this->breadcrumbs=array(
             <? endif?>
 
             <small><cite title="Source Title"><?=$user->country->name?>  <i class="icon-map-marker"></i></cite></small>
+            <p><strong>Счета:</strong></p>
+            <? if ($user->bills): ?>
+                <table class="table-bordered" style="width: 40%">
+                    <tr>
+                        <td><strong>Валюта</strong></td>
+                        <td><strong>Значение</strong></td>
+                    </tr>
+                <?foreach($user->bills as $bill):?>
+                    <tr>
+                        <td><?=$bill->currency->currency?></td>
+                        <td><?=$bill->amount?></td>
+                    </tr>
+                <?endforeach;?>
+                </table>
+            <? endif;?>
             <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.
-                In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
             </p>
         </blockquote>
     </div>

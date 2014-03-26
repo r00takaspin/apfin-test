@@ -13,7 +13,9 @@ class UserTest extends CDbTestCase {
     public $fixtures=array(
         'users'=>'User',
         'countries'=>'Country',
-        'friendship'=>'Friendship'
+        'friendship'=>'Friendship',
+        'CurrencyRates'=>'CurrencyRate',
+        'bills'=>'Bill'
     );
 
     public  function testCreateUser()
@@ -126,5 +128,22 @@ class UserTest extends CDbTestCase {
         $this->assertTrue(User::isFriend($this->users['friends_owner']['id'],$this->users['friend_two']['id']));
     }
 
+    public function testUserBillCreation()
+    {
+        $user = new User();
+        $user->setScenario('create');
+
+        $user->login = "create@bill.com";
+        $user->first_name = "Тест";
+        $user->last_name = "Создания";
+        $user->third_name = "Счета";
+        $user->country_id = $this->countries["russia"]['id'];
+        $user->passwd = "123456";
+        $user->passwd_repeat = "123456";
+
+        $user->save();
+
+        $this->assertEquals(1000,$user->bills[0]->amount);
+    }
 
 }

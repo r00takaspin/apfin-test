@@ -12,11 +12,16 @@ return array(
         'application.helpers.*',
     ),
 
+
+
 	// preloading 'log' component
 	'preload'=>array('log'),
 
 	// application components
 	'components'=>array(
+        'fixture'=>array(
+            'class'=>'system.test.CDbFixtureManager',
+        ),
         'db'=>array(
             'connectionString' => 'mysql:host=localhost;dbname=apfin-test',
             'emulatePrepare' => true,
