@@ -15,7 +15,7 @@ $this->breadcrumbs=array(
             echo CHtml::image(Yii::app()->baseUrl.'/images/default_avatar.png','',array('class'=>'img-rounded'));
         ?>
     </div>
-    <div class="span8">
+    <div class="span6">
         <blockquote>
             <? if ($user->country->required_third_name): ?>
                 <p><strong><?=$user->last_name?> <?=$user->first_name?> <?=$user->third_name?></strong></p>
@@ -30,6 +30,43 @@ $this->breadcrumbs=array(
     </div>
 </div>
 <BR />
+
+<table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+        <th class="span2"></th>
+        <th class="span2"></th>
+        <th class="span9"></th>
+        <th class="span2"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><strong>John Doe</strong></td>
+        <td><span class="label pull-right">Notifications</span></td>
+        <td><strong>Message body goes here</strong></td>
+        <td><strong>11:23 PM</strong></td>
+    </tr>
+    <tr>
+        <td>John Doe</td>
+        <td><span class="label pull-right">Notifications</span></td>
+        <td>Message body goes here</td>
+        <td>Sept4</td>
+    </tr>
+    <tr>
+        <td><strong>John Doe</strong></td>
+        <td><span class="label pull-right">Notifications</span></td>
+        <td><strong>Message body goes here</strong></td>
+        <td><strong>Sept3</strong></td>
+    </tr>
+    <tr>
+        <td><strong>John Doe</strong></td>
+        <td><span class="label pull-right">Notifications</span></td>
+        <td><strong>Message body goes here</strong></td>
+        <td><strong>Sept3</strong></td>
+    </tr>
+    </tbody>
+</table>
 
 <? if ($user->friends):?>
     <h3>Друзья</h3>

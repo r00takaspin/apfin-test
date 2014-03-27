@@ -14,6 +14,16 @@
             <p><strong><a href="<?=Yii::app()->createUrl('profile/show',array('id'=>$friend->id))?>"><?=$friend->login?></a></strong> </p>
             <p><?=$friend->first_name?> <?=$friend->last_name?>, <?=$friend->country->name?></p>
             <span class=" badge badge-info"><?=count($friend->friends)?> друзей</span>
+            <?if ($friend->bills):?>
+            <p>
+                <BR />
+                <?foreach($friend->bills as $b):?>
+                    <? if (round($b->amount)>0): ?>
+                        <span class="badge"><?=round($b->amount)?> <?=$b->currency?></span>
+                    <? endif; ?>
+                <?endforeach;?>
+            </p>
+            <?endif;?>
         </div>
     </div>
 </div>

@@ -13,10 +13,21 @@
 class CurrencyTransaction extends CActiveRecord
 {
 
-    public function beforeSave()
+    public function afterSave()
     {
         if ($this->getIsNewRecord())
         {
+            $this->date=date('now');
+        }
+    }
+
+    public function beforeSave()
+    {
+        #TODO: refactor
+        $this->date = date('Y-m-d H:i:s');
+        if ($this->getIsNewRecord())
+        {
+
             $criteria = new CDbCriteria();
             $criteria->compare('currency_id',$this->to_currency_id);
             $criteria->compare('user_id',$this->user_id);
@@ -29,9 +40,14 @@ class CurrencyTransaction extends CActiveRecord
 
             $from_bill  = Bill::model()->find($criteria);
 
+            if ($from_bill->id==$to_bill->id)
+            {
+                $this->addError('from_currency_id','Нельзя конвертировать валюту в себя');
+                return false;
+            }
+
             if ($from_bill->amount - (float)(CurrencyTransaction::calc($this->to_currency_id,$this->from_currency_id,CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount)))<0.0)
             {
-                echo 'fuuuuu';
                 $this->addError('amount','Недостаточно средств на счете');
                 return false;
             }
