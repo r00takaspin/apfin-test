@@ -33,7 +33,30 @@ class ProfileController extends Controller
 	public function actionIndex()
 	{
         $user = User::model()->findByPk(Yii::app()->user->id);
-		$this->render('index',array('user'=>$user));
+
+        $friends_news = array();
+
+        if ($user->friends)
+        {
+            $friends_ids = array_map(function ($val) { return $val->id; },$user->friends);
+
+            $sql = 'SELECT currency_trans.id FROM currency_trans
+                       LEFT JOIN user ON user_id=user.id
+                       WHERE user_id IN ('.join(',',$friends_ids).') ORDER BY currency_trans.id DESC  LIMIT 10';
+
+            $curr_trans_ids = Yii::app()->db->createCommand($sql)->queryAll();
+
+            $curr_trans_ids = array_map(function($el) { return $el['id'];},$curr_trans_ids);
+
+            $idCommaSeparated = implode(',',$curr_trans_ids);
+
+            $criteria = new CDbCriteria;
+            $criteria->order = "FIELD(id, $idCommaSeparated)";
+
+            $friends_news = CurrencyTransaction::model()->findAllByPk($curr_trans_ids,$criteria);
+        }
+
+		$this->render('index',array('user'=>$user,'friends_news'=>$friends_news));
 	}
 
     public function actionShow($id)

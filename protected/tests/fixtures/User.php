@@ -80,6 +80,16 @@ return array(
         'passwd'=>md5('123456'),
         'country_id'=>1,
     ),
+    'bill_test1'=>array(
+        'id'=>9,
+        'login'=>'test999@test.com',
+        'first_name'=>'Тест',
+        'last_name'=>'Счетов',
+        'third_name'=>'$$$',
+        'passwd'=>md5('123456'),
+        'country_id'=>1,
+    )
+
 
 
 );

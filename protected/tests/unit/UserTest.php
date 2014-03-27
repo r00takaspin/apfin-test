@@ -1,6 +1,12 @@
 <?php
 require_once 'PHPUnit/Autoload.php';
 
+/**
+ * Created by PhpStorm.
+ * User: voldemar
+ * Date: 25.03.14
+ * Time: 5:33
+ */
 
 class UserTest extends CDbTestCase {
 
@@ -139,5 +145,6 @@ class UserTest extends CDbTestCase {
 
         $this->assertEquals(1000,$user->bills[0]->amount);
     }
+
 
 }

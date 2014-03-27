@@ -9,6 +9,7 @@
  * @property integer $from_currency_id
  * @property integer $to_currency_id
  * @property double $amount
+ * @property double $converted_amount
  */
 class CurrencyTransaction extends CActiveRecord
 {
@@ -51,27 +52,34 @@ class CurrencyTransaction extends CActiveRecord
                 $this->addError('amount','Недостаточно средств на счете');
                 return false;
             }
-
             if (!$to_bill)
             {
                 $to_bill = new Bill();
-                $to_bill->user_id = Yii::app()->user->id;
+                $to_bill->scenario = 'create';
+                $to_bill->user_id = $this->user_id;
                 $to_bill->currency_id = $this->to_currency_id;
                 $to_bill->amount = CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount);
-                $to_bill->save();
+                if (!$to_bill->save())
+                {
+                    return false;
+                }
             }
             else
             {
-                $to_bill->user_id = Yii::app()->user->id;
+                $to_bill->user_id = $this->user_id;
                 $to_bill->currency_id = $this->to_currency_id;
                 $to_bill->amount += CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount);
                 $to_bill->save();
             }
-
             $from_bill->amount -= CurrencyTransaction::calc($this->to_currency_id,$this->from_currency_id,CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount));
-            $from_bill->save();
+            $this->converted_amount = CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount);
+            if (!$from_bill->save())
+            {
+                return false;
+            }
             return true;
         }
+        return false;
     }
 	/**
 	 * @return string the associated database table name
@@ -107,7 +115,8 @@ class CurrencyTransaction extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
             'from_currency'=>array(self::BELONGS_TO,'CurrencyRate','from_currency_id'),
-            'to_currency'=>array(self::BELONGS_TO,'CurrencyRate','to_currency_id')
+            'to_currency'=>array(self::BELONGS_TO,'CurrencyRate','to_currency_id'),
+            'user'=>array(self::BELONGS_TO,'User','user_id')
 		);
 	}
 

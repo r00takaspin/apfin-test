@@ -40,6 +40,16 @@ return array(
 
 	// application components
 	'components'=>array(
+        'log'=>array(
+            'class'=>'CLogRouter',
+            'routes'=>array(
+                array( // -- CWebLogRoute ---------------------------
+                    'class'=>'CWebLogRoute',
+                    'levels'=>'error, warning, trace, profile, info',
+                    'enabled'=>true,
+                ),
+            )
+        ),
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
