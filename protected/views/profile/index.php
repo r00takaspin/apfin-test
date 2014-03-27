@@ -24,23 +24,8 @@ $this->breadcrumbs=array(
             <? endif?>
 
             <small><cite title="Source Title"><?=$user->country->name?>  <i class="icon-map-marker"></i></cite></small>
-            <p><strong>Счета:</strong></p>
-            <? if ($user->bills): ?>
-                <table class="table-bordered" style="width: 40%">
-                    <tr>
-                        <td><strong>Валюта</strong></td>
-                        <td><strong>Значение</strong></td>
-                    </tr>
-                <?foreach($user->bills as $bill):?>
-                    <tr>
-                        <td><?=$bill->currency->currency?></td>
-                        <td><?=$bill->amount?></td>
-                    </tr>
-                <?endforeach;?>
-                </table>
-            <? endif;?>
-            <p>
-            </p>
+            <BR />
+            <?=$this->renderPartial("particals/_user_bills",array('user'=>$user))?>
         </blockquote>
     </div>
 </div>

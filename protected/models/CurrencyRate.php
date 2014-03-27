@@ -10,6 +10,13 @@
  */
 class CurrencyRate extends CActiveRecord
 {
+    public function __toString()
+    {
+        return $this->currency;
+    }
+
+
+    const BASE_CURRENCY = 'RUB';
 	/**
 	 * @return string the associated database table name
 	 */

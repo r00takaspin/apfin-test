@@ -1,12 +1,6 @@
 <?php
 require_once 'PHPUnit/Autoload.php';
 
-/**
- * Created by PhpStorm.
- * User: voldemar
- * Date: 25.03.14
- * Time: 5:33
- */
 
 class UserTest extends CDbTestCase {
 

@@ -64,7 +64,8 @@ class User extends CActiveRecord
 		return array(
             'country'=>array(self::BELONGS_TO,'Country','country_id'),
             'friends'=>array(self::MANY_MANY,'User','friendship(from_id, to_id)'),
-            'bills'=>array(self::HAS_MANY,'Bill','user_id')
+            'bills'=>array(self::HAS_MANY,'Bill','user_id'),
+            'trans'=>array(self::HAS_MANY,'CurrencyTransaction','user_id','order'=>'ID DESC')
 		);
 	}
 

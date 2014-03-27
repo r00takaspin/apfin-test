@@ -7,6 +7,8 @@
  */
 
 class EcbParserCommand extends CConsoleCommand {
+
+    #TODO: сделать апдейт вместо удаления всего из БД
     public function run($args)
     {
         $xml= simplexml_load_file("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
@@ -23,6 +25,9 @@ class EcbParserCommand extends CConsoleCommand {
             $cr->save();
         }
 
+        $cr = new CurrencyRate();
+        $cr->currency = "EUR";
+        $cr->rate     = 1;
 
     }
 } 

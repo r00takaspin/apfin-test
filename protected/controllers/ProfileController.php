@@ -2,6 +2,8 @@
 
 class ProfileController extends Controller
 {
+
+
 	public function actionEdit()
 	{
         $model = User::model()->findByPk(Yii::app()->user->id);
@@ -17,11 +19,6 @@ class ProfileController extends Controller
             if ($model->save(true,array('first_name','third_name','last_name','country_id')))
             {
                 Yii::app()->user->setFlash('profileUpdated','Профиль успешно изменен');
-            }
-            else
-            {
-                var_dump($model->getErrors());
-                die();
             }
         }
 
@@ -41,6 +38,7 @@ class ProfileController extends Controller
 
     public function actionShow($id)
     {
+        $id = (int)$id;
         $user = User::model()->findByPk($id);
         if ($user)
         {
@@ -81,6 +79,31 @@ class ProfileController extends Controller
         return false;
     }
 
+    public function actionExchange()
+    {
+        $trans = new CurrencyTransaction();
+        if (Yii::app()->getRequest()->getIsPostRequest())
+        {
+            $trans->setAttributes($_POST['CurrencyTransaction']);
+            $trans->user_id = Yii::app()->user->id;
+            $trans->save();
+        }
+
+        $user = User::model()->findByPk(Yii::app()->user->id);
+
+        $this->render('exchange',array('user'=>$user,'model'=>$trans,'currency_bills'));
+    }
+
+    public function actionCalc()
+    {
+        $from = (int)$_REQUEST['from'];
+        $to   = (int)$_REQUEST['to'];
+        $amount = (float)$_REQUEST['amount'];
+
+        echo CurrencyTransaction::calc($from,$to,$amount);
+
+    }
+
     public function filters()
     {
         return array(
@@ -93,11 +116,11 @@ class ProfileController extends Controller
         #TODO: вынести в константу защищенные экшены
         return array(
             array('allow',
-                'actions'=>array('index', 'edit','friends','addFriend','userList'),
+                'actions'=>array('index', 'edit','friends','addFriend','userList','exchange','calc'),
                 'users'=>array('@'),
             ),
             array('deny',
-                'actions'=>array('index', 'edit','friends','addFriend','userList'),
+                'actions'=>array('index', 'edit','friends','addFriend','userList','exchange','calc'),
                 'users'=>array('?'),
             ),
         );

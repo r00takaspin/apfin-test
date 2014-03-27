@@ -21,6 +21,7 @@
 $menu_items = array(
     'main'=>array('label'=>'Главная', 'url'=>array('/profile/index')),
     'edit_profile'=>array('label'=>'Редактировать профиль', 'url'=>array('/profile/edit'), 'visible'=>!Yii::app()->user->isGuest),
+    'exchange'=>array('label'=>'Обмен валют', 'url'=>array('/profile/exchange'), 'visible'=>!Yii::app()->user->isGuest),
     'user_list'=>array('label'=>'Все пользователи', 'url'=>array('/profile/userList'), 'visible'=>!Yii::app()->user->isGuest),
     'logout'=>array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/auth/logout'), 'visible'=>!Yii::app()->user->isGuest)
 );

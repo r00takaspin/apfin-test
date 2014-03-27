@@ -12,6 +12,51 @@
  */
 class CurrencyTransaction extends CActiveRecord
 {
+
+    public function beforeSave()
+    {
+        if ($this->getIsNewRecord())
+        {
+            $criteria = new CDbCriteria();
+            $criteria->compare('currency_id',$this->to_currency_id);
+            $criteria->compare('user_id',$this->user_id);
+
+            $to_bill = Bill::model()->find($criteria);
+
+            $criteria = new CDbCriteria();
+            $criteria->compare('currency_id',$this->from_currency_id);
+            $criteria->compare('user_id',$this->user_id);
+
+            $from_bill  = Bill::model()->find($criteria);
+
+            if ($from_bill->amount - (float)(CurrencyTransaction::calc($this->to_currency_id,$this->from_currency_id,CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount)))<0.0)
+            {
+                echo 'fuuuuu';
+                $this->addError('amount','Недостаточно средств на счете');
+                return false;
+            }
+
+            if (!$to_bill)
+            {
+                $to_bill = new Bill();
+                $to_bill->user_id = Yii::app()->user->id;
+                $to_bill->currency_id = $this->to_currency_id;
+                $to_bill->amount = CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount);
+                $to_bill->save();
+            }
+            else
+            {
+                $to_bill->user_id = Yii::app()->user->id;
+                $to_bill->currency_id = $this->to_currency_id;
+                $to_bill->amount += CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount);
+                $to_bill->save();
+            }
+
+            $from_bill->amount -= CurrencyTransaction::calc($this->to_currency_id,$this->from_currency_id,CurrencyTransaction::calc($this->from_currency_id,$this->to_currency_id,$this->amount));
+            $from_bill->save();
+            return true;
+        }
+    }
 	/**
 	 * @return string the associated database table name
 	 */
@@ -45,35 +90,23 @@ class CurrencyTransaction extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'from_currency'=>array(self::BELONGS_TO,'CurrencyRate','from_currency_id'),
+            'to_currency'=>array(self::BELONGS_TO,'CurrencyRate','to_currency_id')
 		);
 	}
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
+
 	public function attributeLabels()
 	{
 		return array(
 			'id' => 'ID',
 			'user_id' => 'User',
-			'from_currency_id' => 'From Currency',
-			'to_currency_id' => 'To Currency',
-			'amount' => 'Amount',
+			'from_currency_id' => 'Из чего',
+			'to_currency_id' => 'Во что',
+			'amount' => 'Сумма',
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
@@ -91,14 +124,26 @@ class CurrencyTransaction extends CActiveRecord
 		));
 	}
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return CurrencyTransaction the static model class
-	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
+
+    public static function calc($from,$to,$amount)
+    {
+        if ($amount>0)
+        {
+            $from_curr = CurrencyRate::model()->findByPk($from);
+            $to_curr = CurrencyRate::model()->findByPk($to);
+            if ($from_curr && $to_curr)
+            {
+                $result = ($amount/$from_curr->rate)*$to_curr->rate;
+                return $result;
+            }
+            return false;
+
+        }
+        return false;
+
+    }
 }
