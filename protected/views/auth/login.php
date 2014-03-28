@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1>Login</h1>
+<h1>Авторизация</h1>
 
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -20,7 +20,6 @@ $this->breadcrumbs=array(
 	),
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 		<?php echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username'); ?>
@@ -36,7 +35,7 @@ $this->breadcrumbs=array(
         </div>
 
         <div>
-            <?php echo CHtml::submitButton('Login',array('id'=>'login','name'=>'login')); ?>
+            <?php echo CHtml::submitButton('Авторизация',array('id'=>'login','name'=>'login')); ?>
         </div>
 
 <?php $this->endWidget(); ?>

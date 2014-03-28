@@ -94,18 +94,16 @@ $this->breadcrumbs=array(
         <td>
             <strong>Куда</strong>
         </td>
-        <td>
-            <strong>Сумма</strong>
-        </td>
+        <td><strong>Когда</strong></td>
     </tr>
 
     <? foreach($user->trans as $t): ?>
         <tr>
             <td><?=$t->id?></td>
-            <td><?=$t->from_currency->currency?></td>
+            <td><?=$t->amount?> <?=$t->from_currency->currency?></td>
             <td>=></td>
-            <td><?=$t->to_currency->currency?></td>
-            <td><?=$t->amount?></td>
+            <td><?=$t->converted_amount?> <?=$t->to_currency->currency?></td>
+            <td><?=$t->date?></td>
         </tr>
     <? endforeach; ?>
 </table>
