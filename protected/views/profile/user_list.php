@@ -1,6 +1,6 @@
 <?
 $this->breadcrumbs=array(
-    'Profile',
+    'Список всех пользователей',
 );
 ?>
 <div class="span8">

@@ -6,7 +6,7 @@
 
 <?
 $this->breadcrumbs=array(
-    'Edit profile',
+    'Редактирование профиля',
 );
 ?>
 

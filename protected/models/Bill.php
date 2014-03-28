@@ -24,14 +24,10 @@ class Bill extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
 			array('user_id, currency_id, amount', 'required'),
 			array('user_id, currency_id', 'numerical', 'integerOnly'=>true),
 			array('amount', 'numerical'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
 			array('id, user_id, currency_id, amount', 'safe', 'on'=>'search'),
 		);
 	}

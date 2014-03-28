@@ -37,7 +37,6 @@ class CurrencyRate extends CActiveRecord
 			array('rate', 'numerical'),
 			array('currency', 'length', 'max'=>20),
 			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
 			array('id, currency, rate', 'safe', 'on'=>'search'),
 		);
 	}
@@ -79,8 +78,6 @@ class CurrencyRate extends CActiveRecord
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
-
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);

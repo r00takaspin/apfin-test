@@ -9,7 +9,6 @@ class UserIdentity extends CUserIdentity
 {
     private $_id;
 
-    #TODO: вынести шифрование пароля в отдельную функцию статическим методом
 	public function authenticate()
 	{
         $found = User::model()->find("login=:login AND passwd=:passwd",array("login"=>$this->username,"passwd"=>md5($this->password)));

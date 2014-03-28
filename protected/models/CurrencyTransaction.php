@@ -24,7 +24,6 @@ class CurrencyTransaction extends CActiveRecord
 
     public function beforeSave()
     {
-        #TODO: refactor
         $this->date = date('Y-m-d H:i:s');
         if ($this->getIsNewRecord())
         {

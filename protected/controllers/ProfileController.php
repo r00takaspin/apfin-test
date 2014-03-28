@@ -136,7 +136,6 @@ class ProfileController extends Controller
 
     public function accessRules()
     {
-        #TODO: вынести в константу защищенные экшены
         return array(
             array('allow',
                 'actions'=>array('index', 'edit','friends','addFriend','userList','exchange','calc'),

@@ -15,15 +15,13 @@
 <body>
 
 <?
-#TODO: переместить в site_controller
-
 
 $menu_items = array(
-    'main'=>array('label'=>'Главная', 'url'=>array('/profile/index')),
+    'main'=>array('label'=>'Главная', 'url'=>array('/profile/index'), 'visible'=>!Yii::app()->user->isGuest),
     'edit_profile'=>array('label'=>'Редактировать профиль', 'url'=>array('/profile/edit'), 'visible'=>!Yii::app()->user->isGuest),
     'exchange'=>array('label'=>'Обмен валют', 'url'=>array('/profile/exchange'), 'visible'=>!Yii::app()->user->isGuest),
     'user_list'=>array('label'=>'Все пользователи', 'url'=>array('/profile/userList'), 'visible'=>!Yii::app()->user->isGuest),
-    'logout'=>array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/auth/logout'), 'visible'=>!Yii::app()->user->isGuest)
+    'logout'=>array('label'=>'Выйти ('.Yii::app()->user->name.')', 'url'=>array('/auth/logout'), 'visible'=>!Yii::app()->user->isGuest)
 );
 
 ?>
@@ -50,11 +48,6 @@ $menu_items = array(
 
 	<div class="clear"></div>
 
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
-	</div><!-- footer -->
 
 </div><!-- page -->
 

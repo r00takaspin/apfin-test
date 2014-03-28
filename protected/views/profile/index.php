@@ -2,7 +2,7 @@
 /* @var $this ProfileController */
 
 $this->breadcrumbs=array(
-	'Profile',
+	'Ваш профиль',
 );
 ?>
 
