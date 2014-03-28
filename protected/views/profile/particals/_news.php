@@ -16,7 +16,7 @@
     <?foreach($friends_news as $news):?>
     <tr>
         <td><?=$news->id?></td>
-        <td><strong><?=$news->user->first_name?> <?=$news->user->last_name?></strong></td>
+        <td><strong><?=CHtml::encode($news->user->first_name)?> <?=CHtml::encode($news->user->last_name)?></strong></td>
         <td><span class="label pull-right"></span></td>
         <td><?=$news->amount?> <?=$news->from_currency->currency?> => <?=$news->converted_amount?> <?=$news->to_currency->currency?></td>
         <td><strong><?=$news->date?></strong></td>

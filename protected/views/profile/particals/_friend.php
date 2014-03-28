@@ -12,7 +12,7 @@
         </div>
         <div class="span3">
             <p><strong><a href="<?=Yii::app()->createUrl('profile/show',array('id'=>$friend->id))?>"><?=$friend->login?></a></strong> </p>
-            <p><?=$friend->first_name?> <?=$friend->last_name?>, <?=$friend->country->name?></p>
+            <p><?=CHtml::encode($friend->first_name)?> <?=CHtml::encode($friend->last_name)?>, <?=CHtml::encode($friend->country->name)?></p>
             <span class=" badge badge-info"><?=count($friend->friends)?> друзей</span>
             <?if ($friend->bills):?>
             <p>

@@ -25,7 +25,7 @@ foreach($user_list as $user):
             </div>
 
             <div class="span8">
-                <h3><a href="<?=Yii::app()->createUrl('profile/show',array('id'=>$user->id))?>"><?=$user->first_name?> <?=$user->last_name?></a></h3>
+                <h3><a href="<?=Yii::app()->createUrl('profile/show',array('id'=>$user->id))?>"><?=CHtml::encode($user->first_name)?> <?=CHtml::encode($user->last_name)?></a></h3>
                 <h6><?=$user->login?></h6>
                 <h6><?=$user->country->name?></h6>
             </div>

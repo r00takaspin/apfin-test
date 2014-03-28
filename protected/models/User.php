@@ -55,6 +55,7 @@ class User extends CActiveRecord
             array('login','email'),
             array('login','validate_login','on'=>'create'),
             array('passwd_repeat,passwd','validate_passwd','on'=>'create'),
+            array('passwd_repeat,passwd','length', 'min'=>6, 'max'=>64, 'tooShort'=>'Минимальная длина пароля 6 символов'),
 			array('id, first_name, last_name, third_name, login, passwd, country_id', 'safe', 'on'=>'search'),
 		);
 	}

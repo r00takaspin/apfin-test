@@ -18,9 +18,9 @@ $this->breadcrumbs=array(
     <div class="span6">
         <blockquote>
             <? if ($user->country->required_third_name): ?>
-                <p><strong><?=$user->last_name?> <?=$user->first_name?> <?=$user->third_name?></strong></p>
+                <p><strong><?=CHtml::encode($user->last_name)?> <?=CHtml::encode($user->first_name)?> <?=CHtml::encode($user->third_name)?></strong></p>
             <? else: ?>
-                <p><strong><?=$user->first_name?> <?=$user->last_name?></strong></p>
+                <p><strong><?=CHtml::encode($user->first_name)?> <?=CHtml::encode($user->last_name)?></strong></p>
             <? endif?>
 
             <small><cite title="Source Title"><?=$user->country->name?>  <i class="icon-map-marker"></i></cite></small>
